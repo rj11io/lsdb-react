@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "11ai-npm-publishing": {
+      "source": "rj11io/11ai",
+      "sourceType": "github",
+      "computedHash": "1588a199ba10de2717d75c326652454912ddfae04afb90d8a2097c09454b7272"
+    }
+  }
+}
