@@ -55,6 +55,7 @@ jobs:
     permissions:
       contents: write
       issues: write
+      id-token: write
       pull-requests: write
       packages: write
 
@@ -74,6 +75,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Configure npm auth for semantic-release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          cat <<EOF > "$RUNNER_TEMP/.npmrc"
+          registry=https://registry.npmjs.org/
+          always-auth=true
+          //registry.npmjs.org/:_authToken=${NPM_TOKEN}
+          EOF
+          echo "NPM_CONFIG_USERCONFIG=$RUNNER_TEMP/.npmrc" >> "$GITHUB_ENV"
+
       - name: Determine package scope
         id: package_scope
         run: |
@@ -88,6 +100,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm run semantic-release
 
       - name: Set up Node.js for GitHub Packages
