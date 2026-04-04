@@ -5,7 +5,7 @@ React bindings for [`@rj11io/lsdb`](https://github.com/rj11io/lsdb).
 ## Install
 
 ```sh
-npm install @rj11io/lsdb @rj11io/lsdb-react react
+npm install @rj11io/lsdb-react react
 ```
 
 ## Usage

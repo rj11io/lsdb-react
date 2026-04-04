@@ -41,8 +41,10 @@
   "overrides": {
     "lodash-es": "4.17.21"
   },
+  "dependencies": {
+    "@rj11io/lsdb": "1.1.0"
+  },
   "peerDependencies": {
-    "@rj11io/lsdb": "^1.0.1",
     "react": ">=18"
   },
   "devDependencies": {
@@ -53,7 +55,6 @@
     "@semantic-release/npm": "12.0.2",
     "@semantic-release/release-notes-generator": "14.1.0",
     "@playwright/test": "1.53.2",
-    "@rj11io/lsdb": "file:../lsdb",
     "@types/react": "19.1.2",
     "@types/react-dom": "19.1.2",
     "@vitejs/plugin-react": "4.7.0",
