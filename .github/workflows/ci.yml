@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout lsdb-react
+        uses: actions/checkout@v4
+        with:
+          path: lsdb-react
+
+      - name: Checkout lsdb
+        uses: actions/checkout@v4
+        with:
+          repository: rj11io/lsdb
+          path: lsdb
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: lsdb-react/package-lock.json
+
+      - name: Build local lsdb dependency
+        working-directory: lsdb
+        run: |
+          npm ci
+          npm run build
+
+      - name: Install lsdb-react dependencies
+        working-directory: lsdb-react
+        run: npm ci
+
+      - name: Install Playwright browser
+        working-directory: lsdb-react
+        run: npx playwright install --with-deps chromium
+
+      - name: Run lsdb-react tests
+        working-directory: lsdb-react
+        run: npm test

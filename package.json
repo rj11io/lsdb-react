@@ -12,9 +12,41 @@
   },
   "license": "Apache-2.0",
   "author": "rj11io",
+  "private": false,
   "type": "commonjs",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc -p tsconfig.json",
+    "lint": "npm run build && node -e \"require('./dist/index.js')\"",
+    "test": "npm run lint && playwright test",
+    "prepack": "npm run build"
+  },
+  "peerDependencies": {
+    "@rj11io/lsdb": "^1.0.1",
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.53.2",
+    "@rj11io/lsdb": "file:../lsdb",
+    "@types/react": "19.1.2",
+    "@types/react-dom": "19.1.2",
+    "@vitejs/plugin-react": "4.7.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "typescript": "5.8.3",
+    "vite": "7.1.12"
   }
 }
