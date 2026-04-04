@@ -1,4 +1,4 @@
-name: CI
+name: CI and Release
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  test:
+  ci:
     runs-on: ubuntu-latest
 
     steps:
@@ -46,3 +46,61 @@ jobs:
       - name: Run lsdb-react tests
         working-directory: lsdb-react
         run: npm test
+
+  release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: ci
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js for npm
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Determine package scope
+        id: package_scope
+        run: |
+          PACKAGE_NAME=$(node -p "require('./package.json').name")
+          if [[ "$PACKAGE_NAME" == @*/* ]]; then
+            echo "scope=${PACKAGE_NAME%%/*}" >> "$GITHUB_OUTPUT"
+          else
+            echo "scope=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Release to npm and GitHub Releases
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm run semantic-release
+
+      - name: Set up Node.js for GitHub Packages
+        if: steps.package_scope.outputs.scope != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://npm.pkg.github.com
+          scope: ${{ steps.package_scope.outputs.scope }}
+
+      - name: Publish tarball to GitHub Packages
+        if: steps.package_scope.outputs.scope != ''
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm publish ./dist/*.tgz --ignore-scripts
