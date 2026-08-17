@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/rj11io/lsdb-react/compare/v1.0.0...v1.0.1) (2026-08-17)
+
+
+### Bug Fixes
+
+* **lsdb-react:** support server prerendering ([1577824](https://github.com/rj11io/lsdb-react/commit/157782476fb87922eed382ad8a6b079e43d7f5b0))
+
 # 1.0.0 (2026-04-05)
 
 

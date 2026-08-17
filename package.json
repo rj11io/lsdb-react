@@ -1,6 +1,6 @@
 {
   "name": "@rj11io/lsdb-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "LSDB React bindings",
   "homepage": "https://github.com/rj11io/lsdb-react#readme",
   "bugs": {
