@@ -34,7 +34,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "lint": "npm run build && node -e \"require('./dist/index.js')\"",
-    "test": "npm run lint && playwright test",
+    "test": "npm run lint && node --test tests/*.node.cjs && playwright test",
     "prepack": "npm run build",
     "semantic-release": "semantic-release"
   },
@@ -42,7 +42,7 @@
     "lodash-es": "4.17.21"
   },
   "dependencies": {
-    "@rj11io/lsdb": "1.1.0"
+    "@rj11io/lsdb": "1.1.2"
   },
   "peerDependencies": {
     "react": ">=18"

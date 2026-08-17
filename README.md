@@ -40,4 +40,10 @@ export function App() {
   );
 }
 ```
-LSDB React bindings
+
+## Server rendering
+
+`@rj11io/lsdb-react` is a client entry point. `LSDBProvider` can be prerendered because
+creating its client does not access browser storage. Keep collection reads and writes in
+effects, event handlers, or other browser-only code. The first data operation requires
+`localStorage` unless you pass an explicit storage implementation.
